@@ -1,0 +1,25 @@
+<% @category = Category.where("subcategories._id"=>params[:subcategory_id]).one %>
+<% @subcategory = @category.subcategories.find(params[:subcategory_id]) %>
+<div class="col-md-10">
+	<div class="row">
+
+		<%= simple_form_for [@subcategory, Product.new] do |f| %>
+
+		<div class="form-inputs">
+			<%= f.input :image, as: :file%>
+			<%= f.input :product_name %>
+			<%= f.input :price %>
+			<%= f.input :specs, :as => :text %>
+			<%= f.input :synopsis %>
+			<%= f.input :location %>
+			<%= f.input :rent %>
+			<%= f.input :rank %> 
+		</div>
+		
+		<div class="form-actions">
+			<%= f.button :submit, "Add", :class => "textwhite"%>
+		</div>
+		<% end %>
+
+	</div>
+</div>

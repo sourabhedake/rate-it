@@ -1,0 +1,63 @@
+<nav class="navbar-fixed-top">
+  <nav class="navbar navbar-inner"  data-offset-top="250" id="nav" >
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#"><img src="" ></a>
+        <%= link_to "Rate It", root_path, :class =>"navbar-brand textwhite", data: { no_turbolink: true }
+ %>
+      </div>
+      <div>
+        <ul class="nav navbar-nav navbar-right">
+          <% if user_signed_in? %>
+          
+          <li><%= link_to "Sign Out", destroy_user_session_path, :class => "textwhite", :method => :delete %>
+
+            <% else %>
+            
+            <li><%= link_to "Sign up", new_user_registration_path, :class => "textwhite" %>   </li>
+            <li><%= link_to "Sign In", new_user_session_path, :class => "textwhite" %>   </li>
+            <% end %>
+
+          </ul>      
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-default"  data-offset-top="250" id="nav">
+
+      <form action = "../pages/search_results" >
+        <form class="form-search center" >
+          <div class="center">
+            <button type="submit" class="btn textwhite" >Search</button>
+            <input type="text" class="input-medium search-query" placeholder="Search any product" width="100px" name="query">
+          </div>
+        </form>
+      </form>
+      
+    </nav>
+  </nav>
+
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title">Sign-in</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input class="form-control" id="exampleInputEmail1" placeholder="Enter email" type="email">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input class="form-control" id="exampleInputPassword1" placeholder="Password" type="password">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <a href="#" data-dismiss="modal" class="btn btn-primary">Close</a>
+          <%= link_to "Sign-in", categories_path, :class => "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div> 

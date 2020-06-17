@@ -1,0 +1,17 @@
+<div class="col-md-10">
+	<div class="row">
+		<h1> <%= @category.category_name %> </h1>
+
+		<% if @category.subcategories.size > 0 %>
+
+		<% for subcategory in @category.subcategories %>
+		<h3> <%= link_to subcategory.subcategory_name, subcategory %></h3>
+		<% #[@category, subcategory] %>
+		<% end %>
+
+		<% end %>
+
+		<p><%= link_to "Add subcategory", {:controller => "categories", :action => "addsubcategory", :category_id => params[:id] } %> </p>
+
+	</div>
+</div>

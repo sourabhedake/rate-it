@@ -1,0 +1,53 @@
+<div id="Carousel3" class="new-products">
+  <h1>New Products</h1>
+<%if Latest.count >0 %>
+  <div id="myCarousel3" class="carousel slide" data-ride="carousel" style="height: 380px;">
+    <% @latests=Latest.last.latestproducts.all.order_by(:added_date =>"desc").limit(3) %>
+    
+    <!-- Carousel indicators -->
+    <% @count = 0 %>
+    <ol class="carousel-indicators">
+      <% for latest in @latests %>
+      <% if @count==0 %>
+      <li data-target="#myCarousel3" data-slide-to="<%=@count %>"class="active" ></li>
+      <% else %>
+      <li data-target="#myCarousel3" data-slide-to="<%=@count %>"></li>
+      <% end %>
+
+      <% @count = @count+1 %>
+      <% end %>
+    </ol>
+
+    <% @count=0 %>
+    <!-- Wrapper for carousel items -->
+    <div class="carousel-inner">
+      <% for latest in @latests %>
+      <% if @count==0 %>
+      <div class="item active">
+        <%= link_to(image_tag(latest.image.url, :alt => "First Slide", :width => "300px", :height => "300px", :title => "Product"), '/products/'+latest.product_name) %>
+      </div>
+      <% else %>
+      <div class="item">
+        <%= link_to(image_tag(latest.image.url, :alt => "second Slide", :width => "300px", :height => "300px", :title => "Product"), '/products/'+latest.product_name) %>
+      </div>
+      <% end %>
+      <% @count=@count+1 %>
+      <% end %>
+      
+    </div>
+
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel3" data-slide-to="3"></li>
+    </ol>
+
+    <!-- Carousel controls -->
+    <a class="carousel-control left" href="#myCarousel3" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="carousel-control right" href="#myCarousel3" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+  </div>
+  
+</div>
+<% end %>

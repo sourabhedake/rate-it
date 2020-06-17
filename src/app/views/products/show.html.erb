@@ -1,0 +1,148 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/theme.css">
+
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery.easing.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/scrolling-nav.js"></script>   
+</head>
+<body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+	<div class="wrapper">
+
+		<div class="col-md-10">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="thumbnail">
+						<%= image_tag(@product.image.url, :width => "300px", :height => "300px") %>
+					</div>
+				</div>
+				<div class="col-md-5">
+					<h1><%= @product._id %></h1>
+					<p><%= (@product.added_date + Time.zone_offset('IST')).strftime("%A,%d %B %Y") %></p>
+					<% @s=Set.new ['price', 'location','specs', 'synopsis','location','rent','rank'] %>
+					<ul>
+					<% @product.attributes.each_pair do |name, value| %>
+						<% if @s.include? name and value and value != 0.0 and value!="" %>
+						<% if name=='specs' %>
+						<li> SPECS: </li>
+						<ul>
+						<% @specs = value.split("\n") %>
+						<% for spec in @specs %>
+						<li><%= spec %></li>
+						<% end %>
+						</ul>
+
+						<% else %>
+						<li><%= name.upcase %> : <%= value %></li>						
+						<% end %>
+
+
+						
+						<% end %>
+
+					<% end %>
+					</ul> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-10">
+					<% if @product.avg_rating == -1 %>
+					<h2> Rating not available </h2>
+					<% else %>
+					<h2> <%= @product.avg_rating.round(1) %> </h2>
+					<% end %>
+
+
+					<!-- show reviews -->
+					<% if @product.reviews.size > 0 %>
+
+					<% for review in @product.reviews %>
+					<h3> author: <%= review.email %> </h3>
+					<p> date: <%= (review.review_date + Time.zone_offset('IST')).strftime("%A, %d %B %Y %H:%M:%S") %> </p>
+					<p> review: <%= review.body %> </p>
+					<p> rating: <%= review.rating %> </p>
+
+					<!-- show edit when user has review -->
+					<% if current_user %>
+					<% if review.email == current_user.email %>
+					<% @has_review = true %>
+					<% @curr_review = review %>
+
+					<%= link_to "Edit", {:controller => "products", :action => "show", :what => "edit" } %>
+					<%= link_to "Delete", {:controller => "products", :action => "show",:what =>"delete"}%>
+					<% end %>
+					<% end %> 
+					<% end %>
+
+					<% end %>
+
+				</br>
+
+			</br>
+
+			<!-- check if signed in -->
+			<% if user_signed_in? %>
+
+			<!-- check is parameter is edit -->
+			<% if params[:what]=="edit" %>
+			<p> Edit a review </p>
+
+			<% @review = @product.reviews.where(:email => current_user.email).one %>
+
+			<%= simple_form_for @review do |f| %>
+			<p> <%= f.label :body %> </p>
+			<p> <%= f.text_area :body %> </p>
+			<%= hidden_field_tag(:product_name, @product.product_name)%>
+			<p> <%= f.button :submit %>
+				<% end %>
+
+				<!-- check is parameter is delete -->
+				<% elsif params[:what]=="delete" and @has_review%>
+				<% @review = @product.reviews.where(:email => current_user.email).one %>
+				<% @lproduct  = Latest.one.latestproducts.where("product_name"=>@product.product_name).one %>
+
+				<% if @product.reviews.count== 1%>
+				<% @product.avg_rating = -1 %>
+				<% else %>
+				<% @product.avg_rating = ((@product.avg_rating * @product.reviews.count)-@review.rating)/(@product.reviews.count-1) %>
+				<% end %>
+
+				<% @lproduct.avg_rating = @product.avg_rating %>
+				<% @lproduct.save %>
+				<% @product.save %>
+
+				<% @review.destroy %>
+				<% @has_review=false %>
+				<% redirect_to :back %>
+
+				<% else %>
+
+				<!-- if user does not have a review, creat new one -->
+				<% if @has_review != true %> 
+				<p> write a review </p>
+
+				<%= form_for [@product, Review.new] do |f| %>
+				<p> <%= f.label :body %> <%= f.text_area :body %> </p>
+				<p> <%= f.submit %>
+					<% end %>
+
+					<% end %>
+
+					<% end %>
+
+					<!-- if not signed in -->
+					<% else %> 
+					<p> <%= link_to "Sign in", new_user_session_path %> to write review </p>
+					<% end %>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
+

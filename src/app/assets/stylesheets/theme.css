@@ -1,0 +1,102 @@
+
+.navbar-inner{
+    color: white;  
+background-color: #006064;
+  
+    margin: 0px;
+    border-bottom-color: black;
+    
+}
+.navbar-default{
+ background-color: gainsboro;
+    margin: 0px;
+    min-height: 150px;
+}
+
+.navbar-brand,
+{
+  color: white;
+  
+}
+
+.textwhite
+{
+    color:white;
+}
+.btn{
+    background-color: #006064;
+    width: 100px;
+}
+.center {
+    text-align:center;
+    margin-top: 60px;
+}
+.input-medium, .search-query{
+width: 500px;
+    height: 35px;
+}
+
+body{
+    
+    padding-top: 220px;
+}
+
+.col-md-2{
+  background-color: lightgrey;
+    padding-top: -200px;
+}
+
+.nav-sidebar {
+  background-color: #f5f5f5;
+  margin-right: -15px;
+  margin-bottom: 20px;
+  margin-left: -15px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a {
+  color: #fff;
+  background-color: #428bca;
+}
+.most-viewed{
+        height: 100%;
+    padding-top: 190px;
+    padding-bottom: 50px;
+    text-align: center;
+    background: #eee;
+
+}
+.top-rated{
+        height: 100%;
+    padding-top: 190px;
+    padding-bottom: 50px;
+    text-align: center;
+    background: #f00;
+
+}
+
+.new-products{
+    height: 100%;
+    padding-top: 190px;
+    padding-bottom: 50px;
+    text-align: center;
+    background: #0f0;
+
+}
+
+.nav-pills,
+.nav-stacked{
+position:fixed;
+    
+}
+.carousel-inner img {
+  margin: auto;
+}
+
+#modalelec{width:75%;}
+
+.margin{
+    border-width: medium;   
+}

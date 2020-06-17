@@ -1,0 +1,62 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>  
+
+<div class="col-md-10">
+	<div class="dropdowncolour">
+		<div class="col-md-3 col-md-offset-11">
+			<div class="dropdown">
+				<button class="btn btn-primary dropdown-toggle  otherbtn" type="button" data-toggle="dropdown">Sort-By
+					<span class="caret"></span></button>
+					<ul class="dropdown-menu">
+						<li><%= link_to "Views", {:controller => "subcategories", :action => "show", :sort => "views", :order => "asc" } %></li>
+						<li> <%= link_to "Date", {:controller => "subcategories", :action => "show", :sort => "date", :order => "asc"} %> </li>
+						<li> <%= link_to "A-Z", {:controller => "subcategories", :action => "show", :sort => params[:sort], :order => "asc"} %> </li>
+						<li> <%= link_to "Z-A", {:controller => "subcategories", :action => "show", :sort => params[:sort], :order => "desc"} %> </li>
+					</ul>
+				</div>
+			</div>
+		</div>       
+		
+		<% @order = params[:order] %>
+
+		<% if params[:sort] == "views" %>
+
+		<% @products=@subcategory.products.order_by(:views => @order) %>
+
+		<% elsif params[:sort] == "date" %>
+
+		<% @products=@subcategory.products.order_by(:added_date => @order) %>
+
+		<% else %>
+
+		<% @products=@subcategory.products %>
+		<% end %>
+
+		<% for product in @products %>
+		
+		<% if product.product_name %>
+		<div class="col-md-3 no-pad">
+			<div class="thumbnail">
+				<%=link_to (image_tag(product.image.url, :height=>"400px", :width=>"400px", :crop => :fill)), product %>
+			</div>
+			<div class="caption">
+				<h3><%= link_to product.product_name, product, :class => :caption %></h3>
+			</div>
+		</div>
+		<% end %>		
+		<% end %>
+
+		<div class="row">
+			<div class="col-md-10">
+				<p><%= link_to "Add product", {:controller => "subcategories", :action => "addproduct", :subcategory_id => @subcategory._id } %> </p>
+			</div>
+		</div>
+
+
+	</div>
+</body>
+</html>
+
+

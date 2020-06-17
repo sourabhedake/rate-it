@@ -1,0 +1,62 @@
+  <div class="row-fluid">
+
+    <div class="col-md-2">
+      <!--Sidebar content-->
+      <% @categories = Category.order_by(:id => "asc") %>
+
+      <ul class="nav nav-pills nav-stacked" id="stacked-menu">
+        <% if request.env['PATH_INFO']==root_path %> 
+        <h2>Explore</h2>
+        <li><a  class="page-scroll" href="#Carousel1">Most viewed </a></li>
+        <li class="nav-divider"></li>
+        <li><a href="#Carousel2" class="page-scroll">Top rated products </a></li>
+        <li class="nav-divider"></li>
+        <li><a href="#Carousel3" class="page-scroll">New products</a></li>
+        <li class="nav-divider"></li>
+        <li>
+          <a class="nav-container" data-toggle="collapse" data-parent="#stacked-menu" href="#p2">Categories<div class="caret-container"><span class="caret arrow"></span></div></a>          
+          <ul class="nav nav-pills nav-stacked collapse" id="p2">
+            <% for category in @categories %>              
+            <li> <%= link_to category._id, "#"+dom_id(category, :infos), "data-toggle" => "modal", 'data-target' => "#"+dom_id(category, :infos)%> </li>
+            <% end %>
+          </ul>
+        </li>
+
+        <% else %>
+
+        <h2><%= link_to "Categories", categories_path %> </h2>
+        
+        <% for category in @categories %>              
+        <li> <%= link_to category._id, "#"+dom_id(category, :infos), "data-toggle" => "modal", 'data-target' => "#"+dom_id(category, :infos), :class => "page-scroll" %></li>
+        <li class="nav-divider"></li>
+        <% end %>
+
+        <% end %>
+
+      </ul>
+
+      <% for category in @categories %>              
+      <div class="modal fade" id="<%= dom_id(category, :infos) %>" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"><%= category._id %></h4>
+            </div>
+            <div class="modal-body">
+              <ul>
+                <% for subcategory in category.subcategories %>
+                <li> <%= link_to subcategory._id, subcategory %> </li>
+                <% end %>
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div> 
+      <% end %>
+
+    </div>
+  </div>
